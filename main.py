@@ -1,4 +1,4 @@
-from Sniffer import Sniffer
+from Sniffer_Scapy import Sniffer
 
 def main():
 
