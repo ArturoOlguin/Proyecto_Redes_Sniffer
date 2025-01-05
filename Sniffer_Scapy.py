@@ -1,12 +1,15 @@
+# Si no se tiene instalado scapy ejecutar #
+## pip install scapy 
+
 from scapy.all import sniff, PcapReader, wrpcap
 
-class Sniffer:
+class Sniffer: # Clase para el sniffer en donde se colocan todas las funciones que ejecuta #
 
     def __init__(self):
-        self.captura_paquetes = []
+        self.captura_paquetes = [] # Inicia la captura con una lista vacia para almacenar los paquetes#
 
     def iniciar_captura (self, interface="eth0", filter=""):
-
+        
         print ("Captura iniciada. Presionar CTRL+C para detener la captura")
 
         try:
