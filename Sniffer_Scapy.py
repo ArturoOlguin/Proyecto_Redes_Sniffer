@@ -1,7 +1,7 @@
 # Si no se tiene instalado scapy ejecutar #
 ## pip install scapy 
 
-from scapy.all import sniff, PcapReader, wrpcap
+from scapy.all import sniff, PcapReader, wrpcap, IP, TCP, UDP
 
 class Sniffer:
 
@@ -31,13 +31,17 @@ class Sniffer:
         filtrado_de_paquetes = [pkt for pkt in self.captura_paquetes if pkt.haslayer(protocol)]
         return filtrado_de_paquetes
     
-    def imprimir_paquetes (self, packets = None):
+    def imprimir_paquetes(self, packets=None):
         if packets is None:
             packets = self.captura_paquetes
-        for packet in packets:
-            packet.show()
-            print("---" * 20)
 
+        print("Resumen de paquetes:")
+        for i, packet in enumerate(packets, 1):
+            protocol = "TCP" if TCP in packet else "UDP" if UDP in packet else "Otro"
+            print(f"{i}: Time: {packet.time:.6f} | Source: {packet[IP].src} | "
+                  f"Destination: {packet[IP].dst} | Protocol: {protocol} | Length: {len(packet)}")
+        print("Fin del resumen.")
+    
     def exportar (self, packets, filename = "captura.pcap"):
         wrpcap(filename, packets)
         print("Paquetetes guardados con exito")
