@@ -37,9 +37,13 @@ class Sniffer:
 
         print("Resumen de paquetes:")
         for i, packet in enumerate(packets, 1):
-            protocol = "TCP" if TCP in packet else "UDP" if UDP in packet else "Otro"
-            print(f"{i}: Time: {packet.time:.6f} | Source: {packet[IP].src} | "
-                  f"Destination: {packet[IP].dst} | Protocol: {protocol} | Length: {len(packet)}")
+            # Verificar si el paquete tiene capa IP
+            if IP in packet:
+                protocol = "TCP" if TCP in packet else "UDP" if UDP in packet else "Otro"
+                print(f"{i}: Time: {packet.time:.6f} | Source: {packet[IP].src} | "
+                    f"Destination: {packet[IP].dst} | Protocol: {protocol} | Length: {len(packet)}")
+            else:
+                print(f"{i}: Paquete sin capa IP.")
         print("Fin del resumen.")
     
     def exportar (self, packets, filename = "captura.pcap"):
