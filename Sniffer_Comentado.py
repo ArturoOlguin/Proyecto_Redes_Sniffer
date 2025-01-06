@@ -2,14 +2,13 @@
 # pip install scapy 
 
 from scapy.all import sniff, PcapReader, wrpcap 
-# Importa las funciones necesarias de la biblioteca Scapy:
 # - sniff: para capturar paquetes en una interfaz de red.
 # - PcapReader: para leer paquetes desde un archivo .pcap.
 # - wrpcap: para exportar paquetes capturados a un archivo .pcap.
 
 class Sniffer:
     # Clase para implementar un sniffer de red.
-    # Contiene métodos para capturar, leer, filtrar, mostrar y exportar paquetes de red.
+    # Implemtacion de metodos para capturar, leer, filtrar, mostrar y exportar paquetes de red.
 
     def __init__(self):
         self.captura_paquetes = []
@@ -17,12 +16,10 @@ class Sniffer:
 
     def iniciar_captura(self, interface="eth0", filter=""):
         # Método para iniciar la captura de paquetes en una interfaz de red específica.
-        # interface: Nombre de la interfaz de red (por defecto "eth0").
-        # filter: Filtros para capturar solo ciertos tipos de tráfico (por defecto ninguno).
+        # interface: Nombre de la interfaz de red (por defecto "eth0"). (Cambiar deacuerdo a la interfaz utilizada)
+        # filter: Filtros para capturar solo ciertos tipos de tráfico.
 
         print("Captura iniciada. Presionar CTRL+C para detener la captura.")
-        # Mensaje para indicar que la captura ha comenzado.
-
         try:
             # Inicia la captura utilizando la función sniff.
             # - iface: Interfaz de red donde se realizará la captura.
@@ -32,12 +29,9 @@ class Sniffer:
             self.captura_paquetes = sniff(iface=interface, filter=filter, prn=lambda x: x.summary(), store=True)
         
         except KeyboardInterrupt:
-            # Maneja la interrupción con CTRL+C para detener la captura.
             print(f"Captura finalizada. Se capturaron {len(self.captura_paquetes)} paquetes.")
-            # Muestra el número total de paquetes capturados.
 
     def leer_paquetes(self, pcapfile):
-        # Método para leer paquetes desde un archivo .pcap.
         # pcapfile: Nombre del archivo .pcap a leer.
 
         try:
@@ -51,8 +45,6 @@ class Sniffer:
             print(f"Error al leer el archivo {pcapfile}: {e}")
 
     def filtro_por_protocolo(self, protocol):
-        # Método para filtrar los paquetes capturados según un protocolo específico.
-        # protocol: Protocolo a filtrar (por ejemplo, TCP, UDP, etc.).
 
         filtrado_de_paquetes = [pkt for pkt in self.captura_paquetes if pkt.haslayer(protocol)]
         # Utiliza una lista por comprensión para seleccionar solo los paquetes que contienen la capa del protocolo especificado.
@@ -60,7 +52,6 @@ class Sniffer:
         # Devuelve la lista de paquetes filtrados.
 
     def imprimir_paquetes(self, packets=None):
-        # Método para mostrar los detalles de los paquetes capturados.
         # packets: Lista de paquetes a mostrar (si no se proporciona, se usa `self.captura_paquetes`).
 
         if packets is None:
@@ -72,10 +63,8 @@ class Sniffer:
             packet.show()
             # Muestra el contenido detallado del paquete.
             print("---" * 20)
-            # Agrega un separador visual entre los detalles de los paquetes.
 
     def exportar(self, packets, filename="captura.pcap"):
-        # Método para exportar los paquetes capturados a un archivo .pcap.
         # packets: Lista de paquetes a exportar.
         # filename: Nombre del archivo de salida (por defecto "captura.pcap").
 
